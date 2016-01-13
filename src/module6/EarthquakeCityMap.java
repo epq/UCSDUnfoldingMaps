@@ -2,6 +2,7 @@ package module6;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
@@ -117,6 +118,8 @@ public class EarthquakeCityMap extends PApplet {
 
 	    // could be used for debugging
 	    printQuakes();
+	    
+	    sortAndPrint(quakeMarkers.size());
 	 		
 	    // (3) Add markers to map
 	    //     NOTE: Country markers are not added to the map.  They are used
@@ -136,9 +139,21 @@ public class EarthquakeCityMap extends PApplet {
 	}
 	
 	
-	// TODO: Add the method:
-	//   private void sortAndPrint(int numToPrint)
-	// and then call that method from setUp
+	/**
+	 * Sorts earthquakes in decreasing order of magnitude. 
+	 * @param numToPrint number of earthquakes to sort
+	 */
+	private void sortAndPrint(int numToPrint) {
+		List<EarthquakeMarker> earthquakes = new ArrayList<EarthquakeMarker>();
+		for (int i = 0; i < numToPrint; i++) {
+			earthquakes.add((EarthquakeMarker)quakeMarkers.get(i));
+		}
+		Collections.sort(earthquakes);
+		
+		for (EarthquakeMarker m: earthquakes) {
+			System.out.println(m);
+		}
+	}
 	
 	/** Event handler that gets called automatically when the 
 	 * mouse moves.
@@ -149,8 +164,7 @@ public class EarthquakeCityMap extends PApplet {
 		// clear the last selection
 		if (lastSelected != null) {
 			lastSelected.setSelected(false);
-			lastSelected = null;
-		
+			lastSelected = null;	
 		}
 		selectMarkerIfHover(quakeMarkers);
 		selectMarkerIfHover(cityMarkers);
@@ -323,7 +337,11 @@ public class EarthquakeCityMap extends PApplet {
 		line(centerx-8, centery-8, centerx+8, centery+8);
 		line(centerx-8, centery+8, centerx+8, centery-8);
 		
+		ybase = ybase+300;
+		rect(xbase, ybase, 150, 250);
 		
+		fill(0);
+		fill(150, 30, 30);
 	}
 
 	

@@ -207,15 +207,18 @@ public class EarthquakeCityMap extends PApplet {
 	// And LandQuakeMarkers have a "country" property set.
 	private void printQuakes() {
 		// TODO: Implement this method
-		int earthquakeCount = 0;
+		int earthquakeCount;
+		int oceanquakeCount = quakeMarkers.size();
+
 		for (Marker country : countryMarkers) {
 			HashMap<String, Object> countryProperties = country.getProperties();
 			Object name = countryProperties.get("name");
-
+			earthquakeCount = 0;
+			
 			for (Marker earthquake : quakeMarkers) {
-				if (earthquake instanceof LandQuakeMarker) {
-					HashMap<String, Object> earthquakeProperties = earthquake.getProperties();
-					Object earthquakeName = earthquakeProperties.get("country");
+				EarthquakeMarker ea = (EarthquakeMarker) earthquake;
+				if (ea.isOnLand()) {
+					String earthquakeName = ea.getStringProperty("country");
 					if (earthquakeName.equals(name)) {
 						earthquakeCount++;
 					}
@@ -224,14 +227,7 @@ public class EarthquakeCityMap extends PApplet {
 			if (earthquakeCount > 0) {
 				System.out.print(name + ": ");
 				System.out.print(earthquakeCount + "\n");
-			}
-			earthquakeCount = 0;
-		}
-
-		int oceanquakeCount = 0;
-		for (Marker earthquake : quakeMarkers) {
-			if (earthquake instanceof OceanQuakeMarker) {
-				oceanquakeCount++;
+				oceanquakeCount -= earthquakeCount;
 			}
 		}
 		System.out.print("Ocean Quakes: " + oceanquakeCount);
